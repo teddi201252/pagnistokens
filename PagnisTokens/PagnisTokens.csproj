@@ -29,4 +29,9 @@
     <EmbeddedResource Include="Images\PagnisToken.png" />
     <EmbeddedResource Include="Images\settings_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Views\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

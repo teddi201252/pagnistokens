@@ -10,9 +10,6 @@ namespace PagnisTokens.Views
         public TabbedMain()
         {
             InitializeComponent();
-
-            MySqlConnection connection = new MySqlConnection("Server=remotemysql.com;Port=3306;Database=7ZZfKCRq3R;Uid=7ZZfKCRq3R;Pwd=KIPGq6QV7W;");
-            connection.Open();
         }
     }
 }
