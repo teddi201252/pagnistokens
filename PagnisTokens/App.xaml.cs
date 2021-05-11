@@ -1,4 +1,5 @@
 ﻿using System;
+using PagnisTokens.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +11,7 @@ namespace PagnisTokens
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new TabbedMain();
         }
 
         protected override void OnStart()

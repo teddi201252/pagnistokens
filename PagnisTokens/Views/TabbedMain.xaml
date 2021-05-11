@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:util="clr-namespace:PagnisTokens.Utilities"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            x:Class="PagnisTokens.Views.TabbedMain">
+
+    <!--Pages can be added as references or inline-->
+    <ContentPage Title="Main Page" IconImageSource=""/>
+    <ContentPage Title="Account" IconImageSource="{util:ImageResource PagnisTokens.Images.account_icon.png}"/>
+    <ContentPage Title="Settings" IconImageSource="{util:ImageResource PagnisTokens.Images.settings_icon.png}"/>
+
+</TabbedPage>
