@@ -11,20 +11,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NIdenticon" Version="1.4.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\" />
-    <Folder Include="Images\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Images\account_icon.png" />
+    <None Remove="Images\PagnisToken.png" />
     <None Remove="Images\settings_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Images\account_icon.png" />
+    <EmbeddedResource Include="Images\PagnisToken.png" />
     <EmbeddedResource Include="Images\settings_icon.png" />
   </ItemGroup>
 </Project>
