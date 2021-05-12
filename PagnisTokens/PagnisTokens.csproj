@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <Authors>Mikael</Authors>
+    <Company>Nessuna</Company>
+    <Product>Pagni's Tokens</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,9 +22,6 @@
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Utilities\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Images\account_icon.png" />
     <None Remove="Images\PagnisToken.png" />
     <None Remove="Images\settings_icon.png" />
@@ -34,7 +34,16 @@
     <EmbeddedResource Include="Images\home_icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Utilities\NotificationSystem.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RegisterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SettingsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

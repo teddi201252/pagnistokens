@@ -10,6 +10,7 @@ namespace PagnisTokens
     {
         private static MySqlConnection _connection;
         public static MySqlConnection Connection { get { return _connection; } }
+        public Color defaultColor = Color.FromHex("#5B8D97");
         
         public App()
         {

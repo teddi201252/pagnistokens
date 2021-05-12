@@ -6,7 +6,7 @@ using QRCoder;
 using SkiaSharp;
 using Xamarin.Forms;
 
-namespace PagnisTokens
+namespace PagnisTokens.Views
 {
     public partial class MainPage : ContentPage
     {

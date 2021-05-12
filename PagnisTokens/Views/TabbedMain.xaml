@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			xmlns:local="clr-namespace:PagnisTokens"
+			xmlns:local="clr-namespace:PagnisTokens.Views"
             xmlns:util="clr-namespace:PagnisTokens.Utilities"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             android:TabbedPage.ToolbarPlacement="Bottom"
@@ -11,7 +11,7 @@
 	<TabbedPage.Children>
 		<local:MainPage Title="Main" IconImageSource="{util:ImageResource PagnisTokens.Images.home_icon.png}"/>
 		<ContentPage Title="Account" IconImageSource="{util:ImageResource PagnisTokens.Images.account_icon.png}"/>
-		<ContentPage Title="Settings" IconImageSource="{util:ImageResource PagnisTokens.Images.settings_icon.png}"/>
+		<local:SettingsPage Title="Settings" IconImageSource="{util:ImageResource PagnisTokens.Images.settings_icon.png}"/>
 	</TabbedPage.Children>
 
 </TabbedPage>

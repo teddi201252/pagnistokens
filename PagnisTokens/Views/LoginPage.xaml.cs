@@ -10,12 +10,16 @@ namespace PagnisTokens.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LoginPage : ContentPage
 	{
+		private NotificationSystem notificationSystem;
+
 		string sqlText;
 		MySqlCommand cmd;
 		public LoginPage()
 		{
 			InitializeComponent();
 			NavigationPage.SetHasNavigationBar(this, false);
+			notificationSystem = new NotificationSystem();
+			AbsoluteRoot.Children.Add(notificationSystem, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
 		}
 
         protected override void OnAppearing()
@@ -46,18 +50,21 @@ namespace PagnisTokens.Views
 					LoggedIn();
                 }
 			}
-
-            //sqlText = "INSERT INTO Users (username, password, walletid) VALUES (@user,@pass,@walletid)";
-            //cmd = new MySqlCommand(sqlText, App.Connection);
-            //cmd.Parameters.AddWithValue("@user", "Utente");
-            //cmd.Parameters.AddWithValue("@pass", UtilFunctions.GetHashedText("Password"));
-            //cmd.Parameters.AddWithValue("@walletid", "questoeilwalletid12345");
-            //cmd.ExecuteNonQuery();
-
         }
 
 		private void LoginClicked(System.Object sender, System.EventArgs e)
         {
+			if (UserEntry.Text == null || UserEntry.Text.Trim() == "")
+			{
+				notificationSystem.AddNewNotification("Errore", "Non hai inserito l'username", Color.Red);
+				return;
+			}
+			else if (PassEntry.Text == null || PassEntry.Text.Trim() == "")
+			{
+				notificationSystem.AddNewNotification("Errore", "Non hai inserito la password", Color.Red);
+				return;
+			}
+
 			sqlText = "SELECT * FROM Users WHERE username = @user AND password = @pass";
 			cmd = new MySqlCommand(sqlText, App.Connection);
 			cmd.Parameters.AddWithValue("@user", UserEntry.Text);
@@ -82,12 +89,21 @@ namespace PagnisTokens.Views
             else
             {
 				PassEntry.Text = "";
-            }
+				notificationSystem.AddNewNotification("Errore", "Username o password errati", Color.Red);
+				return;
+			}
 		}
 
 		private void LoggedIn()
         {
 			Navigation.InsertPageBefore(new TabbedMain(), this);
+			Navigation.PopToRootAsync();
+			Navigation.RemovePage(this);
+		}
+
+		public void Registrati(object sender, EventArgs args)
+		{
+			Navigation.InsertPageBefore(new RegisterPage(), this);
 			Navigation.PopToRootAsync();
 			Navigation.RemovePage(this);
 		}

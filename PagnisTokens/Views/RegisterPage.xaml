@@ -1,53 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PagnisTokens.Views.LoginPage"
-             BackgroundColor="LightSeaGreen">
+             x:Class="PagnisTokens.Views.RegisterPage"
+			 BackgroundColor="LightSeaGreen">
 
 	<AbsoluteLayout
 		x:Name="AbsoluteRoot">
-        <Frame
+		<Frame
             AbsoluteLayout.LayoutBounds="0.5,0.5,0.7,0.5"
             AbsoluteLayout.LayoutFlags="All">
-            <FlexLayout
+			<FlexLayout
                 JustifyContent="Center"
                 Direction="Column">
 
-                <Label
+				<Label
                     Text="Username"
                     TextColor="Black"/>
-                <Entry
+				<Entry
                     x:Name="UserEntry"/>
-                <Label
+				<Label
                     Text="Password"
                     TextColor="Black"/>
-                <Entry
-                    x:Name="PassEntry"/>
+				<Entry
+                    x:Name="PassEntry"
+					IsPassword="True"/>
+				<Label
+                    Text="Conferma password"
+                    TextColor="Black"/>
+				<Entry
+                    x:Name="PassEntry2"
+					IsPassword="True"/>
 
-                <Button
-                    Text="Login"
+				<Button
+                    Text="Registrati"
                     BackgroundColor="LightGray"
                     CornerRadius="10"
-                    Clicked="LoginClicked"/>
+                    Clicked="RegisterClicked"/>
 
-                <BoxView/>
+				<BoxView/>
 				<Label
-                    Text="Registrati"
+                    Text="Hai già un account?"
                     TextColor="Blue"
                     TextDecorations="Underline"
                     HorizontalTextAlignment="Center">
 					<Label.GestureRecognizers>
-						<TapGestureRecognizer Tapped="Registrati"/>
+						<TapGestureRecognizer Tapped="Login"/>
 					</Label.GestureRecognizers>
 				</Label>
 
 			</FlexLayout>
-        </Frame>
+		</Frame>
 
-        <ActivityIndicator
+		<ActivityIndicator
             x:Name="LoadingIndicator"
             IsRunning="False"
             Color="DarkGray"/>
-    </AbsoluteLayout>
+	</AbsoluteLayout>
 
 </ContentPage>

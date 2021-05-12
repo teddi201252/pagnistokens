@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PagnisTokens.Views.SettingsPage">
+
+	<StackLayout>
+
+		<!--Template Bottone-->
+		<BoxView
+			Color="Gray"
+			HeightRequest="2"/>
+		<AbsoluteLayout>
+			<Label
+				Padding="20,0,0,0"
+				Text="Logout"
+				TextColor="Black"
+				FontSize="20"
+				FontAttributes="Bold"
+				VerticalTextAlignment="Center"
+				HorizontalTextAlignment="Start"
+				AbsoluteLayout.LayoutBounds="0,0,1,1"
+				AbsoluteLayout.LayoutFlags="All"/>
+			<Button
+				Clicked="Logout"
+				BackgroundColor="Transparent"
+				AbsoluteLayout.LayoutBounds="0,0,1,1"
+				AbsoluteLayout.LayoutFlags="All"/>
+		</AbsoluteLayout>
+		
+		<BoxView
+			Color="Gray"
+			HeightRequest="2"/>
+
+	</StackLayout>
+	
+</ContentPage>
