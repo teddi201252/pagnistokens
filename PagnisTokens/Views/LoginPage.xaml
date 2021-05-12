@@ -15,11 +15,19 @@
                 <Label
                     Text="Username"
                     TextColor="Black"/>
-                <Entry/>
+                <Entry
+                    x:Name="UserEntry"/>
                 <Label
                     Text="Password"
                     TextColor="Black"/>
-                <Entry/>
+                <Entry
+                    x:Name="PassEntry"/>
+
+                <Button
+                    Text="Login"
+                    BackgroundColor="LightGray"
+                    CornerRadius="10"
+                    Clicked="LoginClicked"/>
 
                 <BoxView/>
                 <Label
@@ -30,6 +38,11 @@
 
             </FlexLayout>
         </Frame>
+
+        <ActivityIndicator
+            x:Name="LoadingIndicator"
+            IsRunning="False"
+            Color="DarkGray"/>
     </AbsoluteLayout>
 
 </ContentPage>

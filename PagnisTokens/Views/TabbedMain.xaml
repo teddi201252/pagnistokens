@@ -9,7 +9,7 @@
 
 	<!--Pages can be added as references or inline-->
 	<TabbedPage.Children>
-		<local:MainPage Title="Main" IconImageSource="{util:ImageResource PagnisTokens.Images.PagnisToken.png}"/>
+		<local:MainPage Title="Main" IconImageSource="{util:ImageResource PagnisTokens.Images.home_icon.png}"/>
 		<ContentPage Title="Account" IconImageSource="{util:ImageResource PagnisTokens.Images.account_icon.png}"/>
 		<ContentPage Title="Settings" IconImageSource="{util:ImageResource PagnisTokens.Images.settings_icon.png}"/>
 	</TabbedPage.Children>

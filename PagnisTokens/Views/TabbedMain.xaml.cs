@@ -10,6 +10,7 @@ namespace PagnisTokens.Views
         public TabbedMain()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
         }
     }
 }

@@ -23,11 +23,13 @@
     <None Remove="Images\account_icon.png" />
     <None Remove="Images\PagnisToken.png" />
     <None Remove="Images\settings_icon.png" />
+    <None Remove="Images\home_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Images\account_icon.png" />
     <EmbeddedResource Include="Images\PagnisToken.png" />
     <EmbeddedResource Include="Images\settings_icon.png" />
+    <EmbeddedResource Include="Images\home_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Views\LoginPage.xaml">
