@@ -18,6 +18,7 @@
 				VerticalOptions="EndAndExpand"/>
 
 			<Label
+				x:Name="BalanceLabel"
 				Text="100,000"
 				TextColor="Black"
 				HorizontalOptions="CenterAndExpand"

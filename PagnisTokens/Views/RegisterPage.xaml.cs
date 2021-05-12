@@ -84,6 +84,12 @@ namespace PagnisTokens.Views
 			cmd.Prepare();
 			cmd.ExecuteNonQuery();
 
+			sqlText = "INSERT INTO Wallets (id, balance) VALUES (@walletid, 100)";
+			cmd = new MySqlCommand(sqlText, App.Connection);
+			cmd.Parameters.AddWithValue("@walletid", UtilFunctions.GetHashedText(UserEntry.Text));
+			cmd.Prepare();
+			cmd.ExecuteNonQuery();
+
 			notificationSystem.AddNewNotification("Conferma", "Account creato con successo, torna al login", Color.LightGreen);
 		}
 

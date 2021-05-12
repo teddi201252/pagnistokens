@@ -20,5 +20,27 @@ namespace PagnisTokens.Utilities
 		{
             return new Color(255 - color.R, 255 - color.G, 255 - color.B);
 		}
+
+        public static string FormatBalance(double balance)
+		{
+            string result;
+            string interi = Math.Floor(balance).ToString();
+            double decimali = balance - int.Parse(interi);
+            decimali *= 100;
+            decimali = Math.Floor(decimali);
+
+            string tempInteri = interi;
+			for (int i = interi.Length; i > 0; i--)
+			{
+				if (i%3 == 0 && i != 0)
+				{
+                    tempInteri = tempInteri.Insert(i-1, ".");
+				}
+			}
+            interi = tempInteri;
+
+            result = interi + "," + decimali.ToString();
+            return result;
+		}
     }
 }

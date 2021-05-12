@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using MySqlConnector;
 using PagnisTokens.Utilities;
 using QRCoder;
 using Xamarin.Essentials;
@@ -28,6 +29,21 @@ namespace PagnisTokens.Views
 
             WalletIdLabel.Text = Application.Current.Properties["walletid"].ToString();
         }
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+            string sqlText = "SELECT balance FROM Wallets WHERE id = @walletid";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@walletid", Application.Current.Properties["walletid"].ToString());
+            cmd.Prepare();
+            MySqlDataReader reader = cmd.ExecuteReader();
+			while (reader.Read())
+			{
+                BalanceLabel.Text = UtilFunctions.FormatBalance(reader.GetDouble(0));
+			}
+            reader.Close();
+		}
 
 		private async void CopyWalletId(object sender, EventArgs e)
 		{
