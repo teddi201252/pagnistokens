@@ -5,7 +5,8 @@
              xmlns:util="clr-namespace:PagnisTokens.Utilities"
              x:Class="PagnisTokens.Views.MainPage">
 
-	<AbsoluteLayout>
+	<AbsoluteLayout
+		x:Name="AbsoluteRoot">
 		<StackLayout
 			AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1"
 			AbsoluteLayout.LayoutFlags="All">
@@ -23,11 +24,26 @@
 				VerticalOptions="StartAndExpand"
 				FontSize="40"/>
 
+			<Frame
+				Margin="50,0,50,0"
+				CornerRadius="30"
+				BackgroundColor="PeachPuff">
+				<Frame.GestureRecognizers>
+					<TapGestureRecognizer Tapped="CopyWalletId"/>
+				</Frame.GestureRecognizers>
+				<Label
+					x:Name="WalletIdLabel"
+					TextColor="Black"
+					LineBreakMode="TailTruncation"
+					InputTransparent="True"/>
+			</Frame>
+			
+			<Image
+				x:Name="QrCodeImage"
+				WidthRequest="150"
+				HeightRequest="150"/>
 		</StackLayout>
-		<Image
-			x:Name="QrCodeImage"
-			AbsoluteLayout.LayoutBounds="0.5,0.9,150,150"
-			AbsoluteLayout.LayoutFlags="PositionProportional"/>
+		
     </AbsoluteLayout>
 
 </ContentPage>

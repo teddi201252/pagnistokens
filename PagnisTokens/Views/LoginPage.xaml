@@ -22,7 +22,8 @@
                     Text="Password"
                     TextColor="Black"/>
                 <Entry
-                    x:Name="PassEntry"/>
+                    x:Name="PassEntry"
+					IsPassword="True"/>
 
                 <Button
                     Text="Login"
