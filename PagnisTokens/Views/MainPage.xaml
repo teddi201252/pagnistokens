@@ -24,6 +24,10 @@
 				FontSize="40"/>
 
 		</StackLayout>
-	</AbsoluteLayout>
+		<Image
+			x:Name="QrCodeImage"
+			AbsoluteLayout.LayoutBounds="0.5,0.9,150,150"
+			AbsoluteLayout.LayoutFlags="PositionProportional"/>
+    </AbsoluteLayout>
 
 </ContentPage>

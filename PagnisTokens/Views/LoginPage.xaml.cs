@@ -37,6 +37,7 @@ namespace PagnisTokens.Views
 				{
 					found = true;
 					Application.Current.Properties["id"] = reader.GetValue(0);
+					Application.Current.Properties["walletid"] = reader.GetValue(3);
 				}
 				reader.Close();
 
@@ -68,6 +69,7 @@ namespace PagnisTokens.Views
 			{
 				found = true;
 				Application.Current.Properties["id"] = reader.GetValue(0);
+				Application.Current.Properties["walletid"] = reader.GetValue(3);
 			}
 			reader.Close();
 

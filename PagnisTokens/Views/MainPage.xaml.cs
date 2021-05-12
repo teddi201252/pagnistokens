@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using QRCoder;
+using SkiaSharp;
 using Xamarin.Forms;
 
 namespace PagnisTokens
@@ -13,6 +13,13 @@ namespace PagnisTokens
         public MainPage()
         {
             InitializeComponent();
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(Application.Current.Properties["walletid"].ToString(), QRCodeGenerator.ECCLevel.Q);
+            BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData);
+            byte[] qrCodeBytes = qrCode.GetGraphic(20, "#0902a8", "#7977a3");
+            
+            ImageSource QrCodeImageSource = ImageSource.FromStream(() => new MemoryStream(qrCodeBytes));
+            QrCodeImage.Source = QrCodeImageSource;
         }
     }
 }

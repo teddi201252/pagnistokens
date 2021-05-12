@@ -15,6 +15,8 @@
     <PackageReference Include="NIdenticon" Version="1.4.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="QRCoder" Version="1.4.1" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\" />
