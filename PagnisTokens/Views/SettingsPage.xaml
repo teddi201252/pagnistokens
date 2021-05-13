@@ -6,9 +6,6 @@
 	<StackLayout>
 
 		<!--Template Bottone-->
-		<BoxView
-			Color="Gray"
-			HeightRequest="2"/>
 		<AbsoluteLayout>
 			<Label
 				Padding="20,0,0,0"

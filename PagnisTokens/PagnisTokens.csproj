@@ -20,13 +20,14 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
+    <PackageReference Include="Jdenticon" Version="3.1.0" />
+    <PackageReference Include="Jdenticon-net" Version="3.1.2" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Images\account_icon.png" />
     <None Remove="Images\PagnisToken.png" />
     <None Remove="Images\settings_icon.png" />
     <None Remove="Images\home_icon.png" />
-    <None Remove="Images\notification_icon.png" />
     <None Remove="Fonts\icon_font.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +35,6 @@
     <EmbeddedResource Include="Images\PagnisToken.png" />
     <EmbeddedResource Include="Images\settings_icon.png" />
     <EmbeddedResource Include="Images\home_icon.png" />
-    <EmbeddedResource Include="Images\notification_icon.png" />
     <EmbeddedResource Include="Fonts\icon_font.ttf" />
   </ItemGroup>
   <ItemGroup>

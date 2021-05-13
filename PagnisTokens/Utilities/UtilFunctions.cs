@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Xamarin.Forms;
+using System.Drawing;
 
 namespace PagnisTokens.Utilities
 {
@@ -16,9 +18,9 @@ namespace PagnisTokens.Utilities
             return hash;
         }
 
-        public static Color ReverseColor(Color color)
+        public static Xamarin.Forms.Color ReverseColor(Xamarin.Forms.Color color)
 		{
-            return new Color(1 - color.R, 1 - color.G, 1 - color.B);
+            return new Xamarin.Forms.Color(1 - color.R, 1 - color.G, 1 - color.B);
 		}
 
         public static string FormatBalance(double balance)
@@ -42,5 +44,14 @@ namespace PagnisTokens.Utilities
             result = interi + "," + decimali.ToString();
             return result;
 		}
+
+        public static byte[] BitmapToByte(System.Drawing.Bitmap img)
+        {
+            using (var stream = new MemoryStream())
+            {
+                img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
+            }
+        }
     }
 }
