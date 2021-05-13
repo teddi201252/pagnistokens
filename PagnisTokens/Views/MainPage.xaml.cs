@@ -29,6 +29,20 @@ namespace PagnisTokens.Views
             QrCodeImage.Source = QrCodeImageSource;
 
             WalletIdLabel.Text = Application.Current.Properties["walletid"].ToString();
+
+            var startTimeSpan = TimeSpan.Zero;
+            var periodTimeSpan = TimeSpan.FromSeconds(5);
+
+            var timer = new System.Threading.Timer((e) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    LoadBalance();
+                    LoadNotifications();
+                });
+            }, null, startTimeSpan, periodTimeSpan);
+
+
         }
 
 		protected override void OnAppearing()
@@ -37,6 +51,7 @@ namespace PagnisTokens.Views
             LoadBalance();
             LoadNotifications();
 		}
+
 
         private void LoadBalance()
         {
@@ -100,5 +115,14 @@ namespace PagnisTokens.Views
             await Clipboard.SetTextAsync(WalletIdLabel.Text);
             notificationSystem.AddNewNotification("Fatto", "Wallet ID copiato negli appunti", Xamarin.Forms.Color.LightGreen);
 		}
-	}
+
+        void IniziaPagamento(System.Object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new PaymentPage(), true);
+        }
+
+        void RichiediPagamento(System.Object sender, System.EventArgs e)
+        {
+        }
+    }
 }

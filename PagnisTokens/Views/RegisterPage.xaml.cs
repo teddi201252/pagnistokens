@@ -91,11 +91,8 @@ namespace PagnisTokens.Views
 			cmd.Prepare();
 			cmd.ExecuteNonQuery();
 
-			sqlText = "INSERT INTO Notifications (idUser, title, message) VALUES (@idUser, 'Premio!', 'Hai ricevuto 100 token!')";
-			cmd = new MySqlCommand(sqlText, App.Connection);
-			cmd.Parameters.AddWithValue("@idUser", idForse);
-			cmd.Prepare();
-			cmd.ExecuteNonQuery();
+
+			DatabaseHelper.addNotificationToUser((int)idForse, "Premio!", "Hai ricevuto 100 token!");
 
 			notificationSystem.AddNewNotification("Conferma", "Account creato con successo, torna al login", Color.LightGreen);
 		}

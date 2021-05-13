@@ -137,6 +137,9 @@
     <PackageReference Include="Jdenticon-net">
       <Version>3.1.2</Version>
     </PackageReference>
+    <PackageReference Include="XForms.Plugin.AnimationNavigationPage">
+      <Version>1.0.8</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>

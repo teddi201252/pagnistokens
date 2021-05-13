@@ -26,6 +26,42 @@
 				VerticalOptions="StartAndExpand"
 				FontSize="40"/>
 
+			<StackLayout
+				HeightRequest="60"
+				Orientation="Horizontal"
+				Margin="10,0,10,0">
+
+				<AbsoluteLayout
+					HorizontalOptions="FillAndExpand"
+					VerticalOptions="FillAndExpand">
+					<Button
+						Text="Paga"
+						TextColor="White"
+						Padding="0"
+						FontSize="20"
+						BackgroundColor="DarkGreen"
+						CornerRadius="50"
+						AbsoluteLayout.LayoutBounds="0,0,1,1"
+						AbsoluteLayout.LayoutFlags="All"
+						Clicked="IniziaPagamento"/>
+				</AbsoluteLayout>
+				<AbsoluteLayout
+					HorizontalOptions="FillAndExpand"
+					VerticalOptions="FillAndExpand">
+					<Button
+						Text="Richiedi"
+						TextColor="White"
+						Padding="0"
+						FontSize="20"
+						BackgroundColor="IndianRed"
+						CornerRadius="50"
+						AbsoluteLayout.LayoutBounds="0,0,1,1"
+						AbsoluteLayout.LayoutFlags="All"
+						Clicked="RichiediPagamento"/>
+				</AbsoluteLayout>
+			</StackLayout>
+
+			<!--Wallet ID-->
 			<Frame
 				Margin="50,0,50,0"
 				CornerRadius="30"
@@ -39,7 +75,7 @@
 					LineBreakMode="TailTruncation"
 					InputTransparent="True"/>
 			</Frame>
-			
+			<!--QR-->
 			<Image
 				x:Name="QrCodeImage"
 				WidthRequest="150"

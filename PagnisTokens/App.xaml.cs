@@ -1,4 +1,5 @@
 ﻿using System;
+using FormsControls.Base;
 using MySqlConnector;
 using PagnisTokens.Views;
 using Xamarin.Essentials;
@@ -21,7 +22,7 @@ namespace PagnisTokens
                 _connection = new MySqlConnection("Server=remotemysql.com;Port=3306;Database=7ZZfKCRq3R;Uid=7ZZfKCRq3R;Pwd=5DTTSyQhIt;");
                 _connection.Open();
             }
-            MainPage = new NavigationPage(new LoginPage());
+            MainPage = new AnimationNavigationPage(new LoginPage());
         }
 
         protected override void OnStart()
