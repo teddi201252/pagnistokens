@@ -6,6 +6,7 @@
 
 	<AbsoluteLayout
 		x:Name="AbsoluteRoot">
+
         <Frame
             AbsoluteLayout.LayoutBounds="0.5,0.5,0.7,0.5"
             AbsoluteLayout.LayoutFlags="All">

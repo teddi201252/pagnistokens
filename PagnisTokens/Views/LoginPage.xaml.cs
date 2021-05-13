@@ -1,16 +1,33 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using MySqlConnector;
 using PagnisTokens.Utilities;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PagnisTokens.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class LoginPage : ContentPage
+	public partial class LoginPage : INotifyPropertyChanged
 	{
 		private NotificationSystem notificationSystem;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private bool _isLoaded = false;
+		public bool IsLoaded
+		{
+			get { return _isLoaded; }
+
+			set
+			{
+				_isLoaded = value;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoaded)));
+			}
+		}
 
 		string sqlText;
 		MySqlCommand cmd;
@@ -22,34 +39,56 @@ namespace PagnisTokens.Views
 			AbsoluteRoot.Children.Add(notificationSystem, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
 		}
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-			//Prova a loggare se si è già loggati una volta
-			if (Application.Current.Properties.ContainsKey("username") && Application.Current.Properties.ContainsKey("password"))
-			{
-				//Fai roba
-				sqlText = "SELECT * FROM Users WHERE username = @user AND password = @pass";
-				cmd = new MySqlCommand(sqlText, App.Connection);
-				cmd.Parameters.AddWithValue("@user", Application.Current.Properties["username"]);
-				cmd.Parameters.AddWithValue("@pass", UtilFunctions.GetHashedText(Application.Current.Properties["password"].ToString()));
-				cmd.Prepare();
-				MySqlDataReader reader = cmd.ExecuteReader();
-				bool found = false;
-				while (reader.Read())
+			if (App.Connection != null)
+            {
+				//Prova a loggare se si è già loggati una volta
+				if (Application.Current.Properties.ContainsKey("username") && Application.Current.Properties.ContainsKey("password"))
 				{
-					found = true;
-					Application.Current.Properties["id"] = reader.GetValue(0);
-					Application.Current.Properties["walletid"] = reader.GetValue(3);
-				}
-				reader.Close();
+					//Fai roba
+					sqlText = "SELECT * FROM Users WHERE username = @user AND password = @pass";
+					cmd = new MySqlCommand(sqlText, App.Connection);
+					cmd.Parameters.AddWithValue("@user", Application.Current.Properties["username"]);
+					cmd.Parameters.AddWithValue("@pass", UtilFunctions.GetHashedText(Application.Current.Properties["password"].ToString()));
+					cmd.Prepare();
+					MySqlDataReader reader = cmd.ExecuteReader();
+					bool found = false;
+					while (reader.Read())
+					{
+						found = true;
+						Application.Current.Properties["id"] = reader.GetValue(0);
+						Application.Current.Properties["walletid"] = reader.GetValue(3);
+					}
+					reader.Close();
 
-                if (found)
-                {
-					LoggedIn();
-                }
+					if (found)
+					{
+						LoggedIn();
+                    }
+                    else
+					{
+						Application.Current.Properties.Remove("username");
+						Application.Current.Properties.Remove("password");
+						Application.Current.Properties.Remove("id");
+						Application.Current.Properties.Remove("walletid");
+					}
+				}
+            }
+            else
+            {
+				await WaitForLoadedPage();
+				notificationSystem.AddNewNotification("Non connesso ad internet", "Controlla di essere connesso e riavvia l'app", Color.Red);
 			}
+		}
+
+		private async Task WaitForLoadedPage()
+        {
+            while (App.Current.MainPage.Width == -1)
+            {
+				await Task.Delay(5);
+            }
         }
 
 		private void LoginClicked(System.Object sender, System.EventArgs e)
@@ -107,5 +146,6 @@ namespace PagnisTokens.Views
 			Navigation.PopToRootAsync();
 			Navigation.RemovePage(this);
 		}
+
 	}
 }

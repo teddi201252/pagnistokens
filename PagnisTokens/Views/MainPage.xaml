@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 xmlns:local="clr-namespace:PagnisTokens"
+			 xmlns:fonts="clr-namespace:PagnisTokens.Fonts"
              xmlns:util="clr-namespace:PagnisTokens.Utilities"
              x:Class="PagnisTokens.Views.MainPage">
 
@@ -44,7 +45,16 @@
 				WidthRequest="150"
 				HeightRequest="150"/>
 		</StackLayout>
-		
+
+		<Button
+			Text="{x:Static fonts:FontLoader.BellIcon}"
+			FontFamily="icon_font"
+			FontSize="25"
+			TextColor="Black"
+			Padding="0"
+			BackgroundColor="Transparent"
+			AbsoluteLayout.LayoutBounds="0.95, 0.02, 50, 50"
+			AbsoluteLayout.LayoutFlags="PositionProportional"/>
     </AbsoluteLayout>
 
 </ContentPage>

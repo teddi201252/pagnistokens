@@ -18,7 +18,7 @@ namespace PagnisTokens.Utilities
 
         public static Color ReverseColor(Color color)
 		{
-            return new Color(255 - color.R, 255 - color.G, 255 - color.B);
+            return new Color(1 - color.R, 1 - color.G, 1 - color.B);
 		}
 
         public static string FormatBalance(double balance)
@@ -26,15 +26,15 @@ namespace PagnisTokens.Utilities
             string result;
             string interi = Math.Floor(balance).ToString();
             double decimali = balance - int.Parse(interi);
-            decimali *= 100;
-            decimali = Math.Floor(decimali);
+            decimali *= 1000000;
+            decimali = Math.Round(decimali);
 
             string tempInteri = interi;
-			for (int i = interi.Length; i > 0; i--)
+			for (int i = 0; i < interi.Length; i++)
 			{
 				if (i%3 == 0 && i != 0)
 				{
-                    tempInteri = tempInteri.Insert(i-1, ".");
+                    tempInteri = tempInteri.Insert(interi.Length - i, ".");
 				}
 			}
             interi = tempInteri;

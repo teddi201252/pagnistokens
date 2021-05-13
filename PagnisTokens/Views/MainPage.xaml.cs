@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using MySqlConnector;
@@ -33,17 +34,66 @@ namespace PagnisTokens.Views
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
+            LoadBalance();
+            LoadNotifications();
+		}
+
+        private void LoadBalance()
+        {
             string sqlText = "SELECT balance FROM Wallets WHERE id = @walletid";
             MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
-            cmd.Parameters.AddWithValue("@walletid", Application.Current.Properties["walletid"].ToString());
+            cmd.Parameters.AddWithValue("@walletid", Application.Current.Properties["walletid"]);
             cmd.Prepare();
-            MySqlDataReader reader = cmd.ExecuteReader();
-			while (reader.Read())
-			{
-                BalanceLabel.Text = UtilFunctions.FormatBalance(reader.GetDouble(0));
-			}
-            reader.Close();
-		}
+            try
+            {
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    BalanceLabel.Text = UtilFunctions.FormatBalance(reader.GetDouble(0));
+                }
+                reader.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("ERRORE: Impossibile leggere i dati dal database");
+            }
+        }
+
+        private void LoadNotifications()
+        {
+            Console.WriteLine(Application.Current.Properties["id"]);
+            string sqlText = "SELECT * FROM Notifications WHERE idUser = @idUser";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@idUser", Application.Current.Properties["id"]);
+            cmd.Prepare();
+            try
+            {
+                List<int> notificheViste = new List<int>();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (!reader.GetBoolean("seen"))
+                    {
+                        notificationSystem.AddNewNotification(reader.GetString("title"), reader.GetString("message"), Xamarin.Forms.Color.White);
+                        notificheViste.Add(reader.GetInt16("id"));
+                    }
+                }
+                reader.Close();
+
+                sqlText = "UPDATE Notifications SET seen=true WHERE id = @idNot";
+                cmd = new MySqlCommand(sqlText, App.Connection);
+                foreach (int idNot in notificheViste)
+                {
+                    cmd.Parameters.AddWithValue("@idNot", idNot);
+                    cmd.ExecuteNonQuery();
+                }
+                
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine("ERRORE: Impossibile leggere i dati dal database");
+            }
+        }
 
 		private async void CopyWalletId(object sender, EventArgs e)
 		{

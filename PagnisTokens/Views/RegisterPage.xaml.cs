@@ -83,10 +83,17 @@ namespace PagnisTokens.Views
 			cmd.Parameters.AddWithValue("@walletid", UtilFunctions.GetHashedText(UserEntry.Text));
 			cmd.Prepare();
 			cmd.ExecuteNonQuery();
+			long idForse = cmd.LastInsertedId;
 
 			sqlText = "INSERT INTO Wallets (id, balance) VALUES (@walletid, 100)";
 			cmd = new MySqlCommand(sqlText, App.Connection);
 			cmd.Parameters.AddWithValue("@walletid", UtilFunctions.GetHashedText(UserEntry.Text));
+			cmd.Prepare();
+			cmd.ExecuteNonQuery();
+
+			sqlText = "INSERT INTO Notifications (idUser, title, message) VALUES (@idUser, 'Premio!', 'Hai ricevuto 100 token!')";
+			cmd = new MySqlCommand(sqlText, App.Connection);
+			cmd.Parameters.AddWithValue("@idUser", idForse);
 			cmd.Prepare();
 			cmd.ExecuteNonQuery();
 
