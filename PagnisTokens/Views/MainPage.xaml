@@ -49,6 +49,7 @@
 					HorizontalOptions="FillAndExpand"
 					VerticalOptions="FillAndExpand">
 					<Button
+						IsEnabled="False"
 						Text="Richiedi"
 						TextColor="White"
 						Padding="0"
@@ -90,7 +91,8 @@
 			Padding="0"
 			BackgroundColor="Transparent"
 			AbsoluteLayout.LayoutBounds="0.95, 0.02, 50, 50"
-			AbsoluteLayout.LayoutFlags="PositionProportional"/>
+			AbsoluteLayout.LayoutFlags="PositionProportional"
+			Clicked="ApriNotifiche"/>
     </AbsoluteLayout>
 
 </ContentPage>

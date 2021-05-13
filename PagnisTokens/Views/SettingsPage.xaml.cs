@@ -26,6 +26,7 @@ namespace PagnisTokens.Views
 			Navigation.InsertPageBefore(new LoginPage(), this.Parent as TabbedPage);
 			Navigation.PopToRootAsync();
 			Navigation.RemovePage(this.Parent as TabbedPage);
+
 		}
 	}
 }

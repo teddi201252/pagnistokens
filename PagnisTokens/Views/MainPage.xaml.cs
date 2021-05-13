@@ -55,6 +55,10 @@ namespace PagnisTokens.Views
 
         private void LoadBalance()
         {
+			if (!Application.Current.Properties.ContainsKey("walletid"))
+			{
+                return;
+			}
             string sqlText = "SELECT balance FROM Wallets WHERE id = @walletid";
             MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
             cmd.Parameters.AddWithValue("@walletid", Application.Current.Properties["walletid"]);
@@ -76,7 +80,10 @@ namespace PagnisTokens.Views
 
         private void LoadNotifications()
         {
-            Console.WriteLine(Application.Current.Properties["id"]);
+            if (!Application.Current.Properties.ContainsKey("id"))
+            {
+                return;
+            }
             string sqlText = "SELECT * FROM Notifications WHERE idUser = @idUser";
             MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
             cmd.Parameters.AddWithValue("@idUser", Application.Current.Properties["id"]);
@@ -123,6 +130,11 @@ namespace PagnisTokens.Views
 
         void RichiediPagamento(System.Object sender, System.EventArgs e)
         {
+        }
+
+        void ApriNotifiche(System.Object sender, System.EventArgs e)
+		{
+            Navigation.PushAsync(new NotificationsPage(), true);
         }
     }
 }

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PagnisTokens.Views.RequestPage"
+    xmlns:fonts="clr-namespace:PagnisTokens.Fonts"
+    BackgroundColor="NavajoWhite">
+
+    <AbsoluteLayout
+        x:Name="AbsoluteRoot">
+
+        <FlexLayout
+            Direction="Column"
+            JustifyContent="Start"
+            Margin="30,100,30,30"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+
+            <Label
+                Text="Importo:"/>
+            <Entry
+                x:Name="EntryImporto"
+                Keyboard="Numeric"
+                BackgroundColor="White"/>
+
+            <BoxView/>
+
+            <Label
+                Text="Wallet ID:"/>
+            <AbsoluteLayout>
+                <Entry
+                    x:Name="EntryWallet"
+                    BackgroundColor="White"
+                    AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    AbsoluteLayout.LayoutFlags="All"/>
+                <Button
+                    Text="{x:Static fonts:FontLoader.PhotoIcon}"
+                    Padding="0"
+                    FontSize="20"
+                    FontFamily="icon_font"
+                    BackgroundColor="Transparent"
+                    AbsoluteLayout.LayoutBounds="1, 0.5, 40, 40"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    Clicked="ScanQRCode"/>
+            </AbsoluteLayout>
+
+        </FlexLayout>
+
+        <Button
+            Text="Invia"
+            TextColor="White"
+            FontSize="25"
+            BackgroundColor="MediumSeaGreen"
+            AbsoluteLayout.LayoutBounds="0.5, 0.95, 0.8, 0.1"
+            AbsoluteLayout.LayoutFlags="All"
+            Clicked="StartTransiction"/>
+
+    </AbsoluteLayout>
+
+</ContentPage>

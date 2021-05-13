@@ -42,7 +42,13 @@ namespace PagnisTokens.Utilities
             cmd.ExecuteNonQuery();
         }
 
-        internal static void sendMoneyFromTo(double importo, string walletSend, string walletReceive)
+        /// <summary>
+        /// Funzione per inviare soldi da qualcuno a qualcuno
+        /// </summary>
+        /// <param name="importo"></param>
+        /// <param name="walletSend"></param>
+        /// <param name="walletReceive"></param>
+        public static void sendMoneyFromTo(double importo, string walletSend, string walletReceive)
         {
             
             string sqlText = "UPDATE Wallets SET balance = balance - @importo WHERE id = @walletSend";
@@ -59,8 +65,24 @@ namespace PagnisTokens.Utilities
             cmd2.Prepare();
             cmd2.ExecuteNonQuery();
 
-            addNotificationToUser(getIdUserByWallet(walletSend), "Transazione avvenuta", "Hai inviato " + importo);
-            addNotificationToUser(getIdUserByWallet(walletReceive), "Transazione avvenuta", "Hai ricevuto " + importo);
+            addNotificationToUser(getIdUserByWallet(walletSend), "Transazione avvenuta", "Hai inviato " + importo + " a " + getUsernameByWallet(walletReceive));
+            addNotificationToUser(getIdUserByWallet(walletReceive), "Transazione avvenuta", "Hai ricevuto " + importo + " da " + getUsernameByWallet(walletSend));
+        }
+
+        public static string getUsernameByWallet(string walletId)
+		{
+            string result = "Qualcuno che non conosco";
+            string sqlText = "SELECT * FROM Users WHERE walletid = @walletId";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@walletId", walletId);
+            cmd.Prepare();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                result = reader.GetString("username");
+            }
+            reader.Close();
+            return result;
         }
     }
 }

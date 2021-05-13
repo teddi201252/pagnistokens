@@ -8,13 +8,13 @@ using ZXing.Net.Mobile.Forms;
 
 namespace PagnisTokens.Views
 {
-    public partial class PaymentPage : ContentPage, IAnimationPage
+    public partial class RequestPage : ContentPage, IAnimationPage
     {
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Medium, Subtype = AnimationSubtype.FromTop };
 
         private NotificationSystem notificationSystem;
 
-        public PaymentPage()
+        public RequestPage()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);

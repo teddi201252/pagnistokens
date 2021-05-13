@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PagnisTokens.Views.NotificationsPage"
+    xmlns:fonts="clr-namespace:PagnisTokens.Fonts"
+    BackgroundColor="White">
+
+    <AbsoluteLayout
+        x:Name="AbsoluteRoot">
+		<ScrollView
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+			<FlexLayout
+			    x:Name="FlexOnIce"
+                Direction="Column"
+                JustifyContent="Start"
+                Margin="30,0,30,0">
+
+			</FlexLayout>
+		</ScrollView>
+
+		<Button
+			Text="{x:Static fonts:FontLoader.LeftArrowIcon}"
+			FontFamily="icon_font"
+			TextColor="Black"
+			FontSize="15"
+			AbsoluteLayout.LayoutBounds="1,1,30,30"
+			AbsoluteLayout.LayoutFlags="PositionProportional"/>
+		
+	</AbsoluteLayout>
+
+</ContentPage>
