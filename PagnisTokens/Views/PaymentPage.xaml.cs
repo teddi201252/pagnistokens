@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using FormsControls.Base;
 using PagnisTokens.Utilities;
 using Xamarin.Forms;
+using ZXing.Mobile;
+using ZXing.Net.Mobile.Forms;
 
 namespace PagnisTokens.Views
 {
@@ -55,5 +57,49 @@ namespace PagnisTokens.Views
 
             Navigation.PopAsync();
         }
+
+        async void ScanQRCode(System.Object sender, System.EventArgs e)
+        {
+            try
+            {
+                var options = new MobileBarcodeScanningOptions
+                {
+                    AutoRotate = false,
+                    UseFrontCameraIfAvailable = false,
+                    TryHarder = true
+                };
+
+                var overlay = new ZXingDefaultOverlay
+                {
+                    TopText = "Please scan QR code",
+                    BottomText = "Align the QR code within the frame"
+                };
+
+                var QRScanner = new ZXingScannerPage(options, overlay);
+
+                await Navigation.PushModalAsync(QRScanner);
+
+                QRScanner.OnScanResult += (result) =>
+                {
+                    // Stop scanning
+                    QRScanner.IsScanning = false;
+
+                    // Pop the page and show the result
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        strAccessToken.Text = result.Text.ToUpper().Trim();
+                        DisplayAlert("Scanned Barcode", result.Text, "OK");
+                    });
+
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        
     }
 }

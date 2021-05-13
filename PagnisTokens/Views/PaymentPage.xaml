@@ -40,7 +40,8 @@
                     FontFamily="icon_font"
                     BackgroundColor="Transparent"
                     AbsoluteLayout.LayoutBounds="1, 0.5, 40, 40"
-                    AbsoluteLayout.LayoutFlags="PositionProportional"/>
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    Clicked="ScanQRCode"/>
             </AbsoluteLayout>
 
         </FlexLayout>

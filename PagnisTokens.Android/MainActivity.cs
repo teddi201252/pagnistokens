@@ -15,6 +15,7 @@ namespace PagnisTokens.Droid
             base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FormsControls.Droid.Main.Init(this);
             LoadApplication(new App());
