@@ -24,5 +24,10 @@ namespace PagnisTokens.Views
             ImageSource avatarSource = ImageSource.FromStream(() => stream);
             AvatarImage.Source = avatarSource;
         }
+
+        void Friends(System.Object sender, System.EventArgs e)
+        {
+            Navigation.PushAsync(new FriendsPage());
+        }
     }
 }

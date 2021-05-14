@@ -25,6 +25,7 @@
     <PackageReference Include="XForms.Plugin.AnimationNavigationPage" Version="1.0.8" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Images\account_icon.png" />

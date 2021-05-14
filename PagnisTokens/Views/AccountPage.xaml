@@ -32,7 +32,35 @@
                     HorizontalOptions="FillAndExpand"
                     VerticalOptions="FillAndExpand"/>
             </Frame>
+            <ScrollView>
+                <StackLayout>
+                    <BoxView
+                        Color="Gray"
+                        HeightRequest="1"/>
 
+                    <AbsoluteLayout>
+			            <Label
+				            Padding="20,0,0,0"
+				            Text="Amici"
+				            TextColor="Black"
+				            FontSize="20"
+				            FontAttributes="Bold"
+				            VerticalTextAlignment="Center"
+				            HorizontalTextAlignment="Start"
+				            AbsoluteLayout.LayoutBounds="0,0,1,1"
+				            AbsoluteLayout.LayoutFlags="All"/>
+			            <Button
+				            Clicked="Friends"
+				            BackgroundColor="Transparent"
+				            AbsoluteLayout.LayoutBounds="0,0,1,1"
+				            AbsoluteLayout.LayoutFlags="All"/>
+		            </AbsoluteLayout>
+                    <BoxView
+                        Color="Gray"
+                        HeightRequest="1"/>
+
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
 
     </AbsoluteLayout>
