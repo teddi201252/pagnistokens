@@ -139,9 +139,9 @@ namespace PagnisTokens.Utilities
         public static List<UserModel> searchUsersByUsername(string namePart)
         {
             List<UserModel> result = new List<UserModel>();
-            string sqlText = "SELECT * FROM Users WHERE username LIKE %@namePart%";
+            string sqlText = "SELECT * FROM Users WHERE username LIKE @namePart";
             MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
-            cmd.Parameters.AddWithValue("@namePart", namePart);
+            cmd.Parameters.AddWithValue("@namePart", "%" + namePart + "%");
             cmd.Prepare();
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -154,6 +154,58 @@ namespace PagnisTokens.Utilities
                 });
             }
             reader.Close();
+            return result;
+        }
+
+        public static UserModel getUserById(int idUser)
+		{
+            UserModel result = null;
+            string sqlText = "SELECT * FROM Users WHERE id = @idUser";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@idUser", idUser);
+            cmd.Prepare();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                result = new UserModel
+                {
+                    id = reader.GetInt32("id"),
+                    username = reader.GetString("username"),
+                    walletid = reader.GetString("walletid")
+                };
+            }
+            reader.Close();
+            return result;
+        }
+
+
+        public static List<UserModel> getAllFriendsOfCurrentUser()
+		{
+            List<UserModel> result = new List<UserModel>();
+            string sqlText = "SELECT * FROM FriendRelations WHERE id1 = @idUser OR id2 = @idUser";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@idUser", App.Current.Properties["id"]);
+            cmd.Prepare();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            List<int> friendIds = new List<int>();
+            while (reader.Read())
+            {
+				if (reader.GetInt32("id1") != int.Parse(App.Current.Properties["id"].ToString()))
+				{
+                    friendIds.Add(reader.GetInt32("id1"));
+				}
+				else
+				{
+                    friendIds.Add(reader.GetInt32("id2"));
+                }
+            }
+            reader.Close();
+
+			foreach (int id in friendIds)
+			{
+                result.Add(getUserById(id));
+			}
+
             return result;
         }
 

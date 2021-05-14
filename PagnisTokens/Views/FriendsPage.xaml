@@ -20,6 +20,7 @@
                     HorizontalOptions="Start"
                     VerticalTextAlignment="Center"/>
                 <Entry
+					x:Name="EntrySearch"
                     HorizontalOptions="FillAndExpand"
                     BackgroundColor="White">
                     <Entry.Clip>
