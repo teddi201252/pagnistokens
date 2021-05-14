@@ -23,7 +23,7 @@ namespace PagnisTokens.Views
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(Application.Current.Properties["walletid"].ToString(), QRCodeGenerator.ECCLevel.Q);
             BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData);
-            byte[] qrCodeBytes = qrCode.GetGraphic(20, "#6b6b6b", "#ededed");
+            byte[] qrCodeBytes = qrCode.GetGraphic(20, "#000000", "#ffffff");
             
             ImageSource QrCodeImageSource = ImageSource.FromStream(() => new MemoryStream(qrCodeBytes));
             QrCodeImage.Source = QrCodeImageSource;
@@ -41,7 +41,6 @@ namespace PagnisTokens.Views
                     LoadNotifications();
                 });
             }, null, startTimeSpan, periodTimeSpan);
-
 
         }
 

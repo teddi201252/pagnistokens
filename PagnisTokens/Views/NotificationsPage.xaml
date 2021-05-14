@@ -24,9 +24,13 @@
 			Text="{x:Static fonts:FontLoader.LeftArrowIcon}"
 			FontFamily="icon_font"
 			TextColor="Black"
-			FontSize="15"
-			AbsoluteLayout.LayoutBounds="1,1,30,30"
-			AbsoluteLayout.LayoutFlags="PositionProportional"/>
+			FontSize="40"
+			Padding="0"
+			CornerRadius="30"
+			BackgroundColor="Transparent"
+			AbsoluteLayout.LayoutBounds="0,1,60,60"
+			AbsoluteLayout.LayoutFlags="PositionProportional"
+			Clicked="CloseNotifications"/>
 		
 	</AbsoluteLayout>
 

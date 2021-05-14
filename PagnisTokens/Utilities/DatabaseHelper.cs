@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using MySqlConnector;
+using PagnisTokens.Models;
 
 namespace PagnisTokens.Utilities
 {
@@ -84,5 +86,37 @@ namespace PagnisTokens.Utilities
             reader.Close();
             return result;
         }
+
+        public static List<NotificationModel> getAllNotificationsIdForCurrentUser()
+        {
+            List<NotificationModel> result = new List<NotificationModel>();
+            string sqlText = "SELECT * FROM Notifications WHERE idUser = @idUser";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@idUser", App.Current.Properties["id"]);
+            cmd.Prepare();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                result.Add(new NotificationModel {
+                    id = reader.GetInt32("id"),
+                    idUser = reader.GetInt32("idUser"),
+                    title = reader.GetString("title"),
+                    message = reader.GetString("message"),
+                    seen = reader.GetBoolean("seen")
+                });
+            }
+            reader.Close();
+            return result;
+        }
+
+        public static void removeNotificationById(int id)
+        {
+            string sqlText = "DELETE FROM Notifications WHERE id = @id";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+        }
+
     }
 }

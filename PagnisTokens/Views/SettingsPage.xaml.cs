@@ -17,14 +17,14 @@ namespace PagnisTokens.Views
 			InitializeComponent();
 		}
 
-		private void Logout(object sender, EventArgs e)
+		private async void Logout(object sender, EventArgs e)
 		{
 			Application.Current.Properties.Remove("username");
 			Application.Current.Properties.Remove("password");
 			Application.Current.Properties.Remove("id");
 			Application.Current.Properties.Remove("walletid");
 			Navigation.InsertPageBefore(new LoginPage(), this.Parent as TabbedPage);
-			Navigation.PopToRootAsync();
+			await Navigation.PopToRootAsync();
 			Navigation.RemovePage(this.Parent as TabbedPage);
 
 		}
