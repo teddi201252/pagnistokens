@@ -71,6 +71,11 @@ namespace PagnisTokens.Utilities
             addNotificationToUser(getIdUserByWallet(walletReceive), "Transazione avvenuta", "Hai ricevuto " + importo + " da " + getUsernameByWallet(walletSend));
         }
 
+        /// <summary>
+        /// Ritorna l'username del wallet id passato
+        /// </summary>
+        /// <param name="walletId"></param>
+        /// <returns></returns>
         public static string getUsernameByWallet(string walletId)
 		{
             string result = "Qualcuno che non conosco";
@@ -87,6 +92,10 @@ namespace PagnisTokens.Utilities
             return result;
         }
 
+        /// <summary>
+        /// Ritorna tutte le notifiche per l'utente corrente
+        /// </summary>
+        /// <returns></returns>
         public static List<NotificationModel> getAllNotificationsIdForCurrentUser()
         {
             List<NotificationModel> result = new List<NotificationModel>();
@@ -109,6 +118,10 @@ namespace PagnisTokens.Utilities
             return result;
         }
 
+        /// <summary>
+        /// Rimuove dal database la notifica con l'id passato
+        /// </summary>
+        /// <param name="id"></param>
         public static void removeNotificationById(int id)
         {
             string sqlText = "DELETE FROM Notifications WHERE id = @id";
@@ -116,6 +129,32 @@ namespace PagnisTokens.Utilities
             cmd.Parameters.AddWithValue("@id", id);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Ritorna una lista di utenti con il nome simile a quello passato
+        /// </summary>
+        /// <param name="namePart"></param>
+        /// <returns></returns>
+        public static List<UserModel> searchUsersByUsername(string namePart)
+        {
+            List<UserModel> result = new List<UserModel>();
+            string sqlText = "SELECT * FROM Users WHERE username LIKE %@namePart%";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@namePart", namePart);
+            cmd.Prepare();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                result.Add(new UserModel
+                {
+                    id = reader.GetInt32("id"),
+                    username = reader.GetString("username"),
+                    walletid = reader.GetString("walletid")
+                });
+            }
+            reader.Close();
+            return result;
         }
 
     }

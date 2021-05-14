@@ -31,6 +31,7 @@ namespace PagnisTokens.Views
         {
             Console.WriteLine("Cerca!");
             //Metti la logica della ricerca qua
+
         }
 
     }
