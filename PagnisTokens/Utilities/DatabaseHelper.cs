@@ -157,6 +157,11 @@ namespace PagnisTokens.Utilities
             return result;
         }
 
+        /// <summary>
+        /// Ritorna tutte le informazioni di un utente tramite id
+        /// </summary>
+        /// <param name="idUser"></param>
+        /// <returns></returns>
         public static UserModel getUserById(int idUser)
 		{
             UserModel result = null;
@@ -178,7 +183,10 @@ namespace PagnisTokens.Utilities
             return result;
         }
 
-
+        /// <summary>
+        /// Ritorna una lista di utenti, che sono tutti amici dell'utente locale
+        /// </summary>
+        /// <returns></returns>
         public static List<UserModel> getAllFriendsOfCurrentUser()
 		{
             List<UserModel> result = new List<UserModel>();
@@ -188,23 +196,30 @@ namespace PagnisTokens.Utilities
             cmd.Prepare();
             MySqlDataReader reader = cmd.ExecuteReader();
             List<int> friendIds = new List<int>();
+            List<string> accepted = new List<string>();
             while (reader.Read())
             {
 				if (reader.GetInt32("id1") != int.Parse(App.Current.Properties["id"].ToString()))
 				{
                     friendIds.Add(reader.GetInt32("id1"));
-				}
+                    accepted.Add(reader.GetBoolean("accepted").ToString());
+                }
 				else
 				{
                     friendIds.Add(reader.GetInt32("id2"));
+                    accepted.Add(null);
                 }
             }
             reader.Close();
 
-			foreach (int id in friendIds)
-			{
-                result.Add(getUserById(id));
-			}
+            for (int i = 0; i < friendIds.Count; i++)
+            {
+                result.Add(getUserById(friendIds[i]));
+                if (accepted[i] == "True")
+                    result[i].friendStatusWithCurrent = "accepted";
+                else if (accepted[i] == "False")
+                    result[i].friendStatusWithCurrent = "toAccept";
+            }
 
             return result;
         }

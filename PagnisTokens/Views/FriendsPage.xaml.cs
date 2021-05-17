@@ -29,7 +29,6 @@ namespace PagnisTokens.Views
 
         }
 
-
 		public FriendsPage()
         {
             InitializeComponent();
@@ -75,30 +74,36 @@ namespace PagnisTokens.Views
                     });
 					if (friendList.Where(o => o.id == user.id).ToList().Count > 0)
 					{
-                        stackUser.Children.Add(new Label
-                        {
-                            Text = FontLoader.FriendIcon,
-                            FontFamily = "icon_font",
-                            FontSize = 20,
-                            TextColor = Color.Black,
-                            VerticalOptions = LayoutOptions.CenterAndExpand,
-                            HorizontalOptions = LayoutOptions.EndAndExpand,
-                            VerticalTextAlignment = TextAlignment.Center,
-                            HorizontalTextAlignment = TextAlignment.Center
-                        });
-					}
-					else
-					{
                         stackUser.Children.Add(new Button
                         {
-                            Text = FontLoader.PlusIcon,
+                            Text = FontLoader.CrossIcon,
                             FontFamily = "icon_font",
-                            FontSize = 20,
-                            TextColor = Color.Black,
+                            Padding = 0,
+                            FontSize = 25,
+                            TextColor = Color.Red,
                             BackgroundColor = Color.Transparent,
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.EndAndExpand
                         });
+                    }
+					else
+					{
+                        Button addFriendBtn = new Button
+                        {
+                            Text = FontLoader.PlusIcon,
+                            FontFamily = "icon_font",
+                            Padding = 0,
+                            FontSize = 25,
+                            TextColor = Color.Green,
+                            BackgroundColor = Color.Transparent,
+                            VerticalOptions = LayoutOptions.CenterAndExpand,
+                            HorizontalOptions = LayoutOptions.EndAndExpand,
+                            ClassId = user.id.ToString()
+                        };
+                        addFriendBtn.Clicked += (sender, e) => {
+                            Console.WriteLine("Aggiungi " + addFriendBtn.ClassId);
+                        };
+                        stackUser.Children.Add(addFriendBtn);
                     }
                 }
 
@@ -140,17 +145,46 @@ namespace PagnisTokens.Views
                         VerticalOptions = LayoutOptions.CenterAndExpand,
                         VerticalTextAlignment = TextAlignment.Center
                     });
-                    stackUser.Children.Add(new Label
+
+                    if (user.friendStatusWithCurrent == "toAccept")
                     {
-                        Text = FontLoader.FriendIcon,
-                        FontFamily = "icon_font",
-                        FontSize = 20,
-                        TextColor = Color.Black,
-                        VerticalOptions = LayoutOptions.CenterAndExpand,
-                        HorizontalOptions = LayoutOptions.EndAndExpand,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center
-                    });
+                        stackUser.Children.Add(new Button
+                        {
+                            Text = FontLoader.CrossIcon,
+                            FontFamily = "icon_font",
+                            Padding = 0,
+                            FontSize = 25,
+                            TextColor = Color.Red,
+                            BackgroundColor = Color.Transparent,
+                            VerticalOptions = LayoutOptions.CenterAndExpand,
+                            HorizontalOptions = LayoutOptions.EndAndExpand
+                        });
+                        stackUser.Children.Add(new Button
+                        {
+                            Text = FontLoader.PlusIcon,
+                            FontFamily = "icon_font",
+                            Padding = 0,
+                            FontSize = 25,
+                            TextColor = Color.Green,
+                            BackgroundColor = Color.Transparent,
+                            VerticalOptions = LayoutOptions.CenterAndExpand,
+                            HorizontalOptions = LayoutOptions.EndAndExpand
+                        });
+                    }
+                    else
+                    {
+                        stackUser.Children.Add(new Button
+                        {
+                            Text = FontLoader.FriendIcon,
+                            FontFamily = "icon_font",
+                            Padding = 0,
+                            FontSize = 25,
+                            TextColor = Color.Black,
+                            BackgroundColor = Color.Transparent,
+                            VerticalOptions = LayoutOptions.CenterAndExpand,
+                            HorizontalOptions = LayoutOptions.EndAndExpand
+                        });
+                    }
 
                 }
             }

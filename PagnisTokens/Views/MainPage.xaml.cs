@@ -30,26 +30,34 @@ namespace PagnisTokens.Views
 
             WalletIdLabel.Text = Application.Current.Properties["walletid"].ToString();
 
-            var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromSeconds(5);
-
-            var timer = new System.Threading.Timer((e) =>
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    LoadBalance();
-                    LoadNotifications();
-                });
-            }, null, startTimeSpan, periodTimeSpan);
-
         }
 
-		protected override void OnAppearing()
+        System.Threading.Timer timer = null;
+        protected override void OnAppearing()
 		{
 			base.OnAppearing();
             LoadBalance();
             LoadNotifications();
-		}
+
+            var startTimeSpan = TimeSpan.Zero;
+            var periodTimeSpan = TimeSpan.FromSeconds(5);
+
+            if (timer == null)
+            {
+                timer = new System.Threading.Timer((e) =>
+                {
+                    if (((TabbedPage)this.Parent).CurrentPage == this)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            LoadBalance();
+                            LoadNotifications();
+                        });
+                    }
+                }, null, startTimeSpan, periodTimeSpan);
+            }
+            
+        }
 
 
         private void LoadBalance()
