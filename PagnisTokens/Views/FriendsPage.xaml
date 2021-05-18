@@ -6,7 +6,8 @@
     x:Class="PagnisTokens.Views.FriendsPage"
     BackgroundColor="PaleTurquoise">
 
-    <AbsoluteLayout>
+    <AbsoluteLayout
+        x:Name="AbsoluteRoot">
         <StackLayout
             Orientation="Vertical"
             AbsoluteLayout.LayoutBounds="0,0,1,1"

@@ -224,5 +224,34 @@ namespace PagnisTokens.Utilities
             return result;
         }
 
+        public static void createNewFriendship(int requestId)
+        {
+            string sqlText = "INSERT INTO FriendRelations (id1, id2) VALUES (@idUser, @requestId)";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@idUser", App.Current.Properties["id"]);
+            cmd.Parameters.AddWithValue("@requestId", requestId);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void refuseFriendshipByIds(int idSender, int idReceiver)
+        {
+            string sqlText = "DELETE FROM FriendRelations WHERE id1 = @idSender AND id2 = @idReceiver";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@idSender", idSender);
+            cmd.Parameters.AddWithValue("@idReceiver", idReceiver);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void acceptFriendshipByIds(int idSender, int idReceiver)
+        {
+            string sqlText = "UPDATE FriendRelations SET accepted = true WHERE id1 = @idSender AND id2 = @idReceiver";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@idSender", idSender);
+            cmd.Parameters.AddWithValue("@idReceiver", idReceiver);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+        }
     }
 }

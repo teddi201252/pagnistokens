@@ -16,6 +16,7 @@ namespace PagnisTokens.Views
     {
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromBottom };
         private ICommand entryUnfocused;
+        private NotificationSystem notificationSystem;
         List<UserModel> friendList = null;
 
         public ICommand EntryUnfocused
@@ -35,6 +36,8 @@ namespace PagnisTokens.Views
             NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = this;
             EntryUnfocused = new Command(CercaPersone);
+            notificationSystem = new NotificationSystem();
+            AbsoluteRoot.Children.Add(notificationSystem, new Xamarin.Forms.Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
         }
 
         private void CercaPersone(object obj)
@@ -76,11 +79,11 @@ namespace PagnisTokens.Views
 					{
                         stackUser.Children.Add(new Button
                         {
-                            Text = FontLoader.CrossIcon,
+                            Text = FontLoader.FriendIcon,
                             FontFamily = "icon_font",
                             Padding = 0,
                             FontSize = 25,
-                            TextColor = Color.Red,
+                            TextColor = Color.Black,
                             BackgroundColor = Color.Transparent,
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.EndAndExpand
@@ -98,10 +101,11 @@ namespace PagnisTokens.Views
                             BackgroundColor = Color.Transparent,
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.EndAndExpand,
-                            ClassId = user.id.ToString()
                         };
                         addFriendBtn.Clicked += (sender, e) => {
-                            Console.WriteLine("Aggiungi " + addFriendBtn.ClassId);
+                            DatabaseHelper.createNewFriendship(user.id);
+                            DatabaseHelper.addNotificationToUser(user.id, "Nuova richiesta", App.Current.Properties["username"] + " ti ha inviato una richiesta di amicizia");
+                            notificationSystem.AddNewNotification("Aggiunto!","Hai mandato una richiesta di amicizia a " + user.username, Color.Green);
                         };
                         stackUser.Children.Add(addFriendBtn);
                     }
@@ -148,7 +152,7 @@ namespace PagnisTokens.Views
 
                     if (user.friendStatusWithCurrent == "toAccept")
                     {
-                        stackUser.Children.Add(new Button
+                        Button refuseBtn = new Button
                         {
                             Text = FontLoader.CrossIcon,
                             FontFamily = "icon_font",
@@ -158,8 +162,17 @@ namespace PagnisTokens.Views
                             BackgroundColor = Color.Transparent,
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.EndAndExpand
-                        });
-                        stackUser.Children.Add(new Button
+                        };
+                        refuseBtn.Clicked += (sender, e) => {
+                            DatabaseHelper.refuseFriendshipByIds(user.id, int.Parse(App.Current.Properties["id"].ToString()));
+                            DatabaseHelper.addNotificationToUser(user.id, "Peggio della friendzone", App.Current.Properties["username"] + " ha rifiutato la tua richiesta d'amicizia :(");
+                            notificationSystem.AddNewNotification("Rifiutato", "Hai rifiutato la richiesta di " + user.username, Color.Red);
+                            ListaAmici.Children.Remove(stackUser);
+                            friendList.Remove(friendList.Where(o=>o.id == user.id).ToList()[0]);
+                        };
+                        stackUser.Children.Add(refuseBtn);
+
+                        Button acceptBtn = new Button
                         {
                             Text = FontLoader.PlusIcon,
                             FontFamily = "icon_font",
@@ -169,7 +182,28 @@ namespace PagnisTokens.Views
                             BackgroundColor = Color.Transparent,
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.EndAndExpand
-                        });
+                        };
+                        acceptBtn.Clicked += (sender, e) => {
+                            DatabaseHelper.acceptFriendshipByIds(user.id, int.Parse(App.Current.Properties["id"].ToString()));
+                            DatabaseHelper.addNotificationToUser(user.id, "Accettato!", App.Current.Properties["username"] + " ha accettato la tua richiesta d'amicizia :)");
+                            notificationSystem.AddNewNotification("Accettato", "Hai accettato la richiesta di " + user.username, Color.Green);
+                            friendList.Where(o => o.id == user.id).ToList()[0].friendStatusWithCurrent = "accepted";
+
+                            stackUser.Children.Remove(refuseBtn);
+                            stackUser.Children.Remove(acceptBtn);
+                            stackUser.Children.Add(new Button
+                            {
+                                Text = FontLoader.FriendIcon,
+                                FontFamily = "icon_font",
+                                Padding = 0,
+                                FontSize = 25,
+                                TextColor = Color.Black,
+                                BackgroundColor = Color.Transparent,
+                                VerticalOptions = LayoutOptions.CenterAndExpand,
+                                HorizontalOptions = LayoutOptions.EndAndExpand
+                            });
+                        };
+                        stackUser.Children.Add(acceptBtn);
                     }
                     else
                     {
