@@ -40,7 +40,7 @@ namespace PagnisTokens.Views
 
                 foreach (NotificationModel notifica in listaNotifiche)
                 {
-                    AbsoluteLayout absolute = new AbsoluteLayout();
+                    AbsoluteLayout absolute = new AbsoluteLayout {HeightRequest = 100 };
                     FlexOnIce.Children.Add(absolute);
                     StackLayout stackLabels = new StackLayout
                     {
