@@ -48,7 +48,8 @@
 				            VerticalTextAlignment="Center"
 				            HorizontalTextAlignment="Start"
 				            AbsoluteLayout.LayoutBounds="0,0,1,1"
-				            AbsoluteLayout.LayoutFlags="All"/>
+				            AbsoluteLayout.LayoutFlags="All"
+                            InputTransparent="True"/>
 			            <Button
 				            Clicked="Friends"
 				            BackgroundColor="Transparent"

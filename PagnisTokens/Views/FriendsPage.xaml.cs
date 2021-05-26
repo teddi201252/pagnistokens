@@ -207,6 +207,16 @@ namespace PagnisTokens.Views
                     }
                     else
                     {
+                        stackUser.Children.Add(new Label
+                        {
+                            Text = DatabaseHelper.getBalanceFromWallet(user.walletid),
+                            TextColor = Color.Black,
+                            FontSize = 18,
+                            VerticalOptions = LayoutOptions.CenterAndExpand,
+                            HorizontalOptions = LayoutOptions.CenterAndExpand,
+                            VerticalTextAlignment = TextAlignment.Center,
+                            HorizontalTextAlignment = TextAlignment.Center
+                        });
                         stackUser.Children.Add(new Button
                         {
                             Text = FontLoader.FriendIcon,

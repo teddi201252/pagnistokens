@@ -7,6 +7,22 @@ namespace PagnisTokens.Utilities
 {
     public static class DatabaseHelper
     {
+        public static string getBalanceFromWallet(string walletId)
+        {
+            string result = "";
+            string sqlText = "SELECT balance FROM Wallets WHERE id = @walletid";
+            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
+            cmd.Parameters.AddWithValue("@walletid", walletId);
+            cmd.Prepare();
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                result = UtilFunctions.FormatBalance(reader.GetDouble(0));
+            }
+            reader.Close();
+            return result;
+        }
+
         /// <summary>
         /// Ritorna l'id utente del proprietario del wallet inserito
         /// </summary>

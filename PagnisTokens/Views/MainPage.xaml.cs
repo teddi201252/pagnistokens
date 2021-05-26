@@ -66,23 +66,9 @@ namespace PagnisTokens.Views
 			{
                 return;
 			}
-            string sqlText = "SELECT balance FROM Wallets WHERE id = @walletid";
-            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
-            cmd.Parameters.AddWithValue("@walletid", Application.Current.Properties["walletid"]);
-            cmd.Prepare();
-            try
-            {
-                MySqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    BalanceLabel.Text = UtilFunctions.FormatBalance(reader.GetDouble(0));
-                }
-                reader.Close();
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine("ERRORE: Impossibile leggere i dati dal database");
-            }
+            
+            BalanceLabel.Text = DatabaseHelper.getBalanceFromWallet(Application.Current.Properties["walletid"].ToString());
+                
         }
 
         private void LoadNotifications()

@@ -6,6 +6,7 @@
     <Authors>Mikael</Authors>
     <Company>Nessuna</Company>
     <Product>Pagni's Tokens</Product>
+    <ReleaseVersion>0.0.3</ReleaseVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
