@@ -19,7 +19,7 @@ namespace PagnisTokens
             InitializeComponent();
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                _connection = new MySqlConnection("Server=remotemysql.com;Port=3306;Database=7ZZfKCRq3R;Uid=7ZZfKCRq3R;Pwd=5DTTSyQhIt;");
+                _connection = new MySqlConnection("Server=remotemysql.com;Port=3306;Database=7ZZfKCRq3R;Uid=7ZZfKCRq3R;");
                 _connection.Open();
             }
             MainPage = new AnimationNavigationPage(new LoginPage());
