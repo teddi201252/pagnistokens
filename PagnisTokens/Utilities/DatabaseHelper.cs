@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using MySqlConnector;
 using PagnisTokens.Models;
+using Xamarin.Forms;
 
 namespace PagnisTokens.Utilities
 {
@@ -27,20 +29,9 @@ namespace PagnisTokens.Utilities
         /// Ritorna l'id utente del proprietario del wallet inserito
         /// </summary>
         /// <returns></returns>
-        public static int getIdUserByWallet(string walletId)
+        public static async Task<UserModel> getUserByWallet(string walletId)
         {
-            int result = -1;
-            string sqlText = "SELECT * FROM Users WHERE walletid = @walletId";
-            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
-            cmd.Parameters.AddWithValue("@walletId", walletId);
-            cmd.Prepare();
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                result = reader.GetInt32("id");
-            }
-            reader.Close();
-            return result;
+            return await App.apiHelper.getUserByWalletId(walletId);
         }
 
         /// <summary>
@@ -49,15 +40,9 @@ namespace PagnisTokens.Utilities
         /// <param name="idUser"></param>
         /// <param name="title"></param>
         /// <param name="msg"></param>
-        public static void addNotificationToUser(int idUser, string title, string msg)
+        public static void addNotificationToUser(string idUser, string title, string msg)
         {
-            string sqlText = "INSERT INTO Notifications (idUser, title, message) VALUES (@idUser, @titolo, @msg)";
-            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
-            cmd.Parameters.AddWithValue("@idUser", idUser);
-            cmd.Parameters.AddWithValue("@titolo", title);
-            cmd.Parameters.AddWithValue("@msg", msg);
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
+            App.apiHelper.sendNotification(idUser, title, msg);
         }
 
         /// <summary>
@@ -66,46 +51,15 @@ namespace PagnisTokens.Utilities
         /// <param name="importo"></param>
         /// <param name="walletSend"></param>
         /// <param name="walletReceive"></param>
-        public static void sendMoneyFromTo(double importo, string walletSend, string walletReceive)
+        public static async void sendMoneyFromTo(double importo, string walletSend, string walletReceive)
         {
-            
-            string sqlText = "UPDATE Wallets SET balance = balance - @importo WHERE id = @walletSend";
-            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
-            cmd.Parameters.AddWithValue("@importo", importo);
-            cmd.Parameters.AddWithValue("@walletSend", walletSend);
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
+			App.apiHelper.paySomeone(importo, walletSend, walletReceive);
 
-            sqlText = "UPDATE Wallets SET balance = balance + @importo WHERE id = @walletReceive";
-            MySqlCommand cmd2 = new MySqlCommand(sqlText, App.Connection);
-            cmd2.Parameters.AddWithValue("@importo", importo);
-            cmd2.Parameters.AddWithValue("@walletReceive", walletReceive);
-            cmd2.Prepare();
-            cmd2.ExecuteNonQuery();
+            UserModel idUserSender = await getUserByWallet(walletSend);
+            UserModel idUserReceiver = await getUserByWallet(walletReceive);
 
-            addNotificationToUser(getIdUserByWallet(walletSend), "Transazione avvenuta", "Hai inviato " + importo + " a " + getUsernameByWallet(walletReceive));
-            addNotificationToUser(getIdUserByWallet(walletReceive), "Transazione avvenuta", "Hai ricevuto " + importo + " da " + getUsernameByWallet(walletSend));
-        }
-
-        /// <summary>
-        /// Ritorna l'username del wallet id passato
-        /// </summary>
-        /// <param name="walletId"></param>
-        /// <returns></returns>
-        public static string getUsernameByWallet(string walletId)
-		{
-            string result = "Qualcuno che non conosco";
-            string sqlText = "SELECT * FROM Users WHERE walletid = @walletId";
-            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
-            cmd.Parameters.AddWithValue("@walletId", walletId);
-            cmd.Prepare();
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                result = reader.GetString("username");
-            }
-            reader.Close();
-            return result;
+            addNotificationToUser(idUserSender.id, "Transazione avvenuta", "Hai inviato " + importo + " a " + idUserReceiver.username);
+            addNotificationToUser(idUserReceiver.id, "Transazione avvenuta", "Hai ricevuto " + importo + " da " + idUserSender.username);
         }
 
         /// <summary>

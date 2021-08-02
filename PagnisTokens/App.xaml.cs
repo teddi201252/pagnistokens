@@ -1,6 +1,7 @@
 ﻿using System;
 using FormsControls.Base;
 using MySqlConnector;
+using PagnisTokens.Utilities;
 using PagnisTokens.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -10,19 +11,25 @@ namespace PagnisTokens
 {
     public partial class App : Application
     {
-        private static MySqlConnection _connection = null;
-        public static MySqlConnection Connection { get { return _connection; } }
-        public Color defaultColor = Color.FromHex("#5B8D97");
-        
-        public App()
+        private static ApiHelper _apiHelper;
+        public static ApiHelper apiHelper { get 
+            {
+				if (_apiHelper == null)
+				{
+                    _apiHelper = new ApiHelper();
+                }
+                return _apiHelper; 
+            }
+        }
+
+		public App()
         {
             InitializeComponent();
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                _connection = new MySqlConnection("Server=remotemysql.com;Port=3306;Database=7ZZfKCRq3R;Uid=7ZZfKCRq3R;");
-                _connection.Open();
-            }
-            MainPage = new AnimationNavigationPage(new LoginPage());
+                MainPage = new AnimationNavigationPage(new LoginPage());
+			}
+            
         }
 
         protected override void OnStart()
