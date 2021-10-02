@@ -4,6 +4,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using AndroidX.AppCompat.App;
 
 namespace PagnisTokens.Droid
 {
@@ -14,6 +15,7 @@ namespace PagnisTokens.Droid
         {
             base.OnCreate(savedInstanceState);
 
+            AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

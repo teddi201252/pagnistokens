@@ -40,15 +40,15 @@ namespace PagnisTokens.Views
             AbsoluteRoot.Children.Add(notificationSystem, new Xamarin.Forms.Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
         }
 
-        private void CercaPersone(object obj)
+        private async void CercaPersone(object obj)
         {
             ListaAmici.Children.Clear();
             //Metti la logica della ricerca qua
-            List<UserModel> usersFound = DatabaseHelper.searchUsersByUsername(EntrySearch.Text);
+            List<UserModel> usersFound = await App.apiHelper.searchUsersByUsername(EntrySearch.Text);
 
 			foreach (UserModel user in usersFound)
 			{
-				if (user.id != int.Parse(Application.Current.Properties["id"].ToString()))
+				if (user.id != Application.Current.Properties["id"].ToString())
 				{
                     StackLayout stackUser = new StackLayout {
                         Margin = new Thickness(10,0,10,0),
@@ -102,9 +102,9 @@ namespace PagnisTokens.Views
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.EndAndExpand,
                         };
-                        addFriendBtn.Clicked += (sender, e) => {
-                            DatabaseHelper.createNewFriendship(user.id);
-                            DatabaseHelper.addNotificationToUser(user.id, "Nuova richiesta", App.Current.Properties["username"] + " ti ha inviato una richiesta di amicizia");
+                        addFriendBtn.Clicked += async (sender, e) => {
+                            await App.apiHelper.createNewFriendship(user.id);
+                            App.apiHelper.sendNotification(user.id, "Nuova richiesta", App.Current.Properties["username"] + " ti ha inviato una richiesta di amicizia");
                             notificationSystem.AddNewNotification("Aggiunto!","Hai mandato una richiesta di amicizia a " + user.username, Color.Green);
                         };
                         stackUser.Children.Add(addFriendBtn);
@@ -114,11 +114,11 @@ namespace PagnisTokens.Views
             }
         }
 
-		public void OnAnimationStarted(bool isPopAnimation)
+		public async void OnAnimationStarted(bool isPopAnimation)
 		{
 			if (!isPopAnimation)
 			{
-                friendList = DatabaseHelper.getAllFriendsOfCurrentUser();
+                friendList = await App.apiHelper.getAllFriendsOfCurrentUser();
 
                 foreach (UserModel user in friendList)
                 {
@@ -163,9 +163,9 @@ namespace PagnisTokens.Views
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.EndAndExpand
                         };
-                        refuseBtn.Clicked += (sender, e) => {
-                            DatabaseHelper.refuseFriendshipByIds(user.id, int.Parse(App.Current.Properties["id"].ToString()));
-                            DatabaseHelper.addNotificationToUser(user.id, "Peggio della friendzone", App.Current.Properties["username"] + " ha rifiutato la tua richiesta d'amicizia :(");
+                        refuseBtn.Clicked += async (sender, e) => {
+                            await App.apiHelper.refuseFriendshipByIds(user.id, App.Current.Properties["id"].ToString());
+                            App.apiHelper.sendNotification(user.id, "Peggio della friendzone", App.Current.Properties["username"] + " ha rifiutato la tua richiesta d'amicizia :(");
                             notificationSystem.AddNewNotification("Rifiutato", "Hai rifiutato la richiesta di " + user.username, Color.Red);
                             ListaAmici.Children.Remove(stackUser);
                             friendList.Remove(friendList.Where(o=>o.id == user.id).ToList()[0]);
@@ -183,9 +183,9 @@ namespace PagnisTokens.Views
                             VerticalOptions = LayoutOptions.CenterAndExpand,
                             HorizontalOptions = LayoutOptions.EndAndExpand
                         };
-                        acceptBtn.Clicked += (sender, e) => {
-                            DatabaseHelper.acceptFriendshipByIds(user.id, int.Parse(App.Current.Properties["id"].ToString()));
-                            DatabaseHelper.addNotificationToUser(user.id, "Accettato!", App.Current.Properties["username"] + " ha accettato la tua richiesta d'amicizia :)");
+                        acceptBtn.Clicked += async (sender, e) => {
+                            await App.apiHelper.acceptFriendshipByIds(user.id, App.Current.Properties["id"].ToString());
+                            App.apiHelper.sendNotification(user.id, "Accettato!", App.Current.Properties["username"] + " ha accettato la tua richiesta d'amicizia :)");
                             notificationSystem.AddNewNotification("Accettato", "Hai accettato la richiesta di " + user.username, Color.Green);
                             friendList.Where(o => o.id == user.id).ToList()[0].friendStatusWithCurrent = "accepted";
 
@@ -209,7 +209,7 @@ namespace PagnisTokens.Views
                     {
                         stackUser.Children.Add(new Label
                         {
-                            Text = DatabaseHelper.getBalanceFromWallet(user.walletid),
+                            Text = await App.apiHelper.getBalanceFromWallet(user.walletid),
                             TextColor = Color.Black,
                             FontSize = 18,
                             VerticalOptions = LayoutOptions.CenterAndExpand,

@@ -26,7 +26,7 @@ namespace PagnisTokens.Views
 
         public void OnAnimationStarted(bool isPopAnimation) { }
 
-        void StartTransiction(System.Object sender, System.EventArgs e)
+        async void StartTransiction(System.Object sender, System.EventArgs e)
         {
             //Effettua pagamento
             if (EntryImporto.Text == null || EntryImporto.Text.Trim() == "")
@@ -56,16 +56,16 @@ namespace PagnisTokens.Views
             }
 
             //Controlla se il walletId inserito esiste
-            int idUtenteDaPagare = DatabaseHelper.getIdUserByWallet(EntryWallet.Text);
-            if (idUtenteDaPagare == -1)
+            string idUtenteDaPagare = (await App.apiHelper.getUserByWalletId(EntryWallet.Text))?.id;
+            if (idUtenteDaPagare == null)
             {
                 notificationSystem.AddNewNotification("Errore", "Wallet ID non esistente", Color.Red);
                 return;
             }
 
-            DatabaseHelper.sendMoneyFromTo(double.Parse(EntryImporto.Text), App.Current.Properties["walletid"].ToString(), EntryWallet.Text);
+            App.apiHelper.paySomeone(double.Parse(EntryImporto.Text), App.Current.Properties["walletid"].ToString(), EntryWallet.Text);
 
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
 
         async void ScanQRCode(System.Object sender, System.EventArgs e)

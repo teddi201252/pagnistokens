@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using MySqlConnector;
+using PagnisTokens.Models;
 using PagnisTokens.Utilities;
 using QRCoder;
 using Xamarin.Essentials;
@@ -40,7 +41,7 @@ namespace PagnisTokens.Views
             LoadNotifications();
 
             var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromSeconds(5);
+            var periodTimeSpan = TimeSpan.FromSeconds(100);
 
             if (timer == null)
             {
@@ -60,54 +61,32 @@ namespace PagnisTokens.Views
         }
 
 
-        private void LoadBalance()
+        private async void LoadBalance()
         {
 			if (!Application.Current.Properties.ContainsKey("walletid"))
 			{
                 return;
 			}
             
-            BalanceLabel.Text = DatabaseHelper.getBalanceFromWallet(Application.Current.Properties["walletid"].ToString());
+            BalanceLabel.Text = await App.apiHelper.getBalanceFromWallet(Application.Current.Properties["walletid"].ToString());
                 
         }
 
-        private void LoadNotifications()
+        private async void LoadNotifications()
         {
             if (!Application.Current.Properties.ContainsKey("id"))
             {
                 return;
             }
-            string sqlText = "SELECT * FROM Notifications WHERE idUser = @idUser";
-            MySqlCommand cmd = new MySqlCommand(sqlText, App.Connection);
-            cmd.Parameters.AddWithValue("@idUser", Application.Current.Properties["id"]);
-            cmd.Prepare();
-            try
-            {
-                List<int> notificheViste = new List<int>();
-                MySqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    if (!reader.GetBoolean("seen"))
-                    {
-                        notificationSystem.AddNewNotification(reader.GetString("title"), reader.GetString("message"), Xamarin.Forms.Color.White);
-                        notificheViste.Add(reader.GetInt16("id"));
-                    }
+            List<NotificationModel> notes = await App.apiHelper.getNotificationsOfUser(Application.Current.Properties["id"].ToString());
+			foreach (var nota in notes)
+			{
+				if (!nota.seen)
+				{
+                    notificationSystem.AddNewNotification(nota.title, nota.message, Xamarin.Forms.Color.White);
+                    App.apiHelper.updateNotificationById(nota.id);
                 }
-                reader.Close();
-
-                sqlText = "UPDATE Notifications SET seen=true WHERE id = @idNot";
-                cmd = new MySqlCommand(sqlText, App.Connection);
-                foreach (int idNot in notificheViste)
-                {
-                    cmd.Parameters.AddWithValue("@idNot", idNot);
-                    cmd.ExecuteNonQuery();
-                }
-                
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine("ERRORE: Impossibile leggere i dati dal database");
-            }
+			}
         }
 
 		private async void CopyWalletId(object sender, EventArgs e)

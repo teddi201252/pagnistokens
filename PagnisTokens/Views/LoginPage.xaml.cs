@@ -1,17 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MySqlConnector;
+using PagnisTokens.Models;
 using PagnisTokens.Utilities;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PagnisTokens.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LoginPage : INotifyPropertyChanged
 	{
 		private NotificationSystem notificationSystem;
@@ -42,28 +40,15 @@ namespace PagnisTokens.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-			if (App.Connection != null)
+			if (App.isConnected)
             {
 				//Prova a loggare se si è già loggati una volta
 				if (Application.Current.Properties.ContainsKey("username") && Application.Current.Properties.ContainsKey("password"))
 				{
-					//Fai roba
-					sqlText = "SELECT * FROM Users WHERE username = @user AND password = @pass";
-					cmd = new MySqlCommand(sqlText, App.Connection);
-					cmd.Parameters.AddWithValue("@user", Application.Current.Properties["username"]);
-					cmd.Parameters.AddWithValue("@pass", UtilFunctions.GetHashedText(Application.Current.Properties["password"].ToString()));
-					cmd.Prepare();
-					MySqlDataReader reader = cmd.ExecuteReader();
-					bool found = false;
-					while (reader.Read())
-					{
-						found = true;
-						Application.Current.Properties["id"] = reader.GetValue(0);
-						Application.Current.Properties["walletid"] = reader.GetValue(3);
-					}
-					reader.Close();
+					//Prova a fare il login
+					UserModel userFound = await App.apiHelper.tryLogin(Application.Current.Properties["username"].ToString(), Application.Current.Properties["password"].ToString());
 
-					if (found)
+					if (userFound != null)
 					{
 						LoggedIn();
                     }
@@ -76,11 +61,6 @@ namespace PagnisTokens.Views
 					}
 				}
             }
-            else
-            {
-				await WaitForLoadedPage();
-				notificationSystem.AddNewNotification("Non connesso ad internet", "Controlla di essere connesso e riavvia l'app", Color.Red);
-			}
 		}
 
 		private async Task WaitForLoadedPage()
@@ -91,7 +71,7 @@ namespace PagnisTokens.Views
             }
         }
 
-		private void LoginClicked(System.Object sender, System.EventArgs e)
+		private async void LoginClicked(System.Object sender, System.EventArgs e)
         {
 			if (UserEntry.Text == null || UserEntry.Text.Trim() == "")
 			{
@@ -104,25 +84,13 @@ namespace PagnisTokens.Views
 				return;
 			}
 
-			sqlText = "SELECT * FROM Users WHERE username = @user AND password = @pass";
-			cmd = new MySqlCommand(sqlText, App.Connection);
-			cmd.Parameters.AddWithValue("@user", UserEntry.Text);
-			cmd.Parameters.AddWithValue("@pass", UtilFunctions.GetHashedText(PassEntry.Text));
-			cmd.Prepare();
-			MySqlDataReader reader = cmd.ExecuteReader();
-			bool found = false;
-			while (reader.Read())
+			UserModel userFound = await App.apiHelper.tryLogin(UserEntry.Text, PassEntry.Text);
+			if (userFound != null)
 			{
-				found = true;
-				Application.Current.Properties["id"] = reader.GetValue(0);
-				Application.Current.Properties["walletid"] = reader.GetValue(3);
-			}
-			reader.Close();
-
-			if (found)
-			{
-				Application.Current.Properties["username"] = UserEntry.Text;
+				Application.Current.Properties["id"] = userFound.id;
+				Application.Current.Properties["username"] = userFound.username;
 				Application.Current.Properties["password"] = PassEntry.Text;
+				Application.Current.Properties["walletid"] = userFound.walletid;
 				LoggedIn();
             }
             else

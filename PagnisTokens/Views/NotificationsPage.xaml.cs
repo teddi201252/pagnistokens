@@ -33,10 +33,10 @@ namespace PagnisTokens.Views
             }
         }
 
-        public void OnAnimationStarted(bool isPopAnimation) {
+        public async void OnAnimationStarted(bool isPopAnimation) {
             if (!isPopAnimation)
             {
-                List<NotificationModel> listaNotifiche = DatabaseHelper.getAllNotificationsIdForCurrentUser();
+                List<NotificationModel> listaNotifiche = await App.apiHelper.getNotificationsOfUser(Application.Current.Properties["id"].ToString());
 
                 foreach (NotificationModel notifica in listaNotifiche)
                 {
@@ -86,7 +86,7 @@ namespace PagnisTokens.Views
                         double heightChilds = absolute.Height;
                         FlexOnIce.Children.Where(o => o.Y > absolute.Y).ForEach(o => o.TranslateTo(o.TranslationX, o.TranslationY - heightChilds));
 
-                        DatabaseHelper.removeNotificationById(int.Parse(deleteButton.ClassId));
+                        App.apiHelper.deleteNotificationById(int.Parse(deleteButton.ClassId));
                     };
                     absolute.Children.Add(deleteButton, new Rectangle(1, 0, 40, 40), AbsoluteLayoutFlags.PositionProportional);
                     absolute.Children.Add(new BoxView

@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using PagnisTokens.Models;
 using PagnisTokens.Utilities;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace PagnisTokens.Views
 			AbsoluteRoot.Children.Add(notificationSystem, new Rectangle(0,0,1,1), AbsoluteLayoutFlags.All);
 		}
 
-		private void RegisterClicked(object sender, EventArgs e)
+		private async void RegisterClicked(object sender, EventArgs e)
 		{
 			if (UserEntry.Text == null || UserEntry.Text.Trim() == "") 
 			{
@@ -37,6 +38,11 @@ namespace PagnisTokens.Views
 			else if (UserEntry.Text.Length > 16)
 			{
 				notificationSystem.AddNewNotification("Errore", "L'username è troppo lungo", Color.Red);
+				return;
+			}
+			else if (UserEntry.Text.Length < 4)
+			{
+				notificationSystem.AddNewNotification("Errore", "L'username è troppo corto", Color.Red);
 				return;
 			}
 			else if (PassEntry.Text == null || PassEntry.Text.Trim() == "")
@@ -59,42 +65,30 @@ namespace PagnisTokens.Views
 			notificationSystem.AddNewNotification("Invio", "Attendi un attimo...", Color.Orange);
 
 			//Controlla che l'username non esista già
-			sqlText = "SELECT username FROM Users WHERE username = @user";
-			cmd = new MySqlCommand(sqlText, App.Connection);
-			cmd.Parameters.AddWithValue("@user", UserEntry.Text);
-			cmd.Prepare();
-			MySqlDataReader reader = cmd.ExecuteReader();
-			bool found = false;
-			while (reader.Read())
+			List<UserModel> listSameUser = await App.apiHelper.searchUsersByUsername(UserEntry.Text);
+			if (listSameUser != null)
 			{
-				found = true;
-			}
-			reader.Close();
-			if (found)
-			{
-				notificationSystem.AddNewNotification("Errore", "L'username è già in uso, scegline un altro", Color.Red);
-				return;
+				foreach (var possibleUser in listSameUser)
+				{
+					if (possibleUser.username == UserEntry.Text)
+					{
+						notificationSystem.AddNewNotification("Errore", "L'username è già in uso, scegline un altro", Color.Red);
+						return;
+					}
+				}
 			}
 
-			sqlText = "INSERT INTO Users (username, password, walletid) VALUES (@user,@pass,@walletid)";
-			cmd = new MySqlCommand(sqlText, App.Connection);
-			cmd.Parameters.AddWithValue("@user", UserEntry.Text);
-			cmd.Parameters.AddWithValue("@pass", UtilFunctions.GetHashedText(PassEntry.Text));
-			cmd.Parameters.AddWithValue("@walletid", UtilFunctions.GetHashedText(UserEntry.Text));
-			cmd.Prepare();
-			cmd.ExecuteNonQuery();
-			long idForse = cmd.LastInsertedId;
+			bool successfulRegistration = await App.apiHelper.tryRegister(UserEntry.Text, PassEntry.Text);
+			if (successfulRegistration)
+			{
+				notificationSystem.AddNewNotification("Conferma", "Account creato con successo, torna al login", Color.LightGreen);
+			}
+			else
+			{
+				notificationSystem.AddNewNotification("Registrazione fallita", "Account non creato, riprova più tardi", Color.Red);
+			}
 
-			sqlText = "INSERT INTO Wallets (id, balance) VALUES (@walletid, 100)";
-			cmd = new MySqlCommand(sqlText, App.Connection);
-			cmd.Parameters.AddWithValue("@walletid", UtilFunctions.GetHashedText(UserEntry.Text));
-			cmd.Prepare();
-			cmd.ExecuteNonQuery();
-
-
-			DatabaseHelper.addNotificationToUser((int)idForse, "Premio!", "Hai ricevuto 100 token!");
-
-			notificationSystem.AddNewNotification("Conferma", "Account creato con successo, torna al login", Color.LightGreen);
+			
 		}
 
 		private void Login(object sender, EventArgs args)
