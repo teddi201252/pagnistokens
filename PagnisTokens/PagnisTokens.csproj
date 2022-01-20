@@ -25,10 +25,10 @@
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
     <PackageReference Include="Jdenticon" Version="3.1.0" />
     <PackageReference Include="Jdenticon-net" Version="3.1.2" />
-    <PackageReference Include="XForms.Plugin.AnimationNavigationPage" Version="1.0.8" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="1.1.0" />
+    <PackageReference Include="Xamarin.Forms.AnimationNavigation" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Images\account_icon.png" />
@@ -36,6 +36,7 @@
     <None Remove="Images\settings_icon.png" />
     <None Remove="Images\home_icon.png" />
     <None Remove="Fonts\icon_font.ttf" />
+    <None Remove="Xamarin.Forms.AnimationNavigation" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Images\account_icon.png" />

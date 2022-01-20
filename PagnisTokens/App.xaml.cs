@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
 using FormsControls.Base;
-using MySqlConnector;
 using PagnisTokens.Utilities;
 using PagnisTokens.Views;
 using Plugin.Connectivity;
-using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace PagnisTokens
 {
@@ -34,7 +30,8 @@ namespace PagnisTokens
                 {
                     return CheckConnection();
                 });
-                MainPage = new AnimationNavigationPage(new LoginPage());
+                AnimationNavigationPage amo = new AnimationNavigationPage(new LoginPage());
+                MainPage = amo;
 			}
             
         }
